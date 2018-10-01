@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+        <title>馆区地图馆内指引-国家数字图书馆</title>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no;" ></meta>
+         <!--必填 SEO--> 
+        <meta name="keyword" content="中国国家数字图书馆,国图移动客户端读者指南" ></meta>
+        <meta name="description" content="中国国家图书馆读者指南"></meta>
+		<!--搜索引擎 辅助抓站-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="allcss.css"  rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/jquery.js"></script>
+
+</head >
+
+<body>
+<table class="gnzynav">
+	<tr>
+        <td id="button1" onclick="addClass1()"class="xuazhong" >
+            <a href="#"  >总馆北区平面图</a>
+        </td>
+        <td id="button2" onclick="addClass2()">
+            <a href="#" >总馆南区平面图</a>
+        </td>
+        <td  id="button3" onclick="addClass3()">
+            <a href="#">少年儿童馆平面图</a>
+        </td>
+        <td id="button4" onclick="addClass4()">
+            <a href="#">古籍馆平面图</a>
+        </td>
+    </tr>
+    <!--<li>
+        <button id="button1"  class="xuazhong">总馆北区平面图</button>
+    </li>
+    <li>
+        <button id="button2">总馆南区平面图</button>
+    </li>
+    <li>
+        <button id="button3">少年儿童馆平面图</button>
+    </li>
+    <li>
+        <button id="button4">古籍馆平面图</button>
+    </li>-->
+</table>
+<div id="beiqu">
+    <ul class="gnzyb">
+        <li>
+            <img src="images/bq1.jpg">
+        </li>
+        <li>
+            <img src="images/bq2.jpg">
+        </li>
+        <li>
+            <img src="images/bq3.jpg">
+        </li>
+        <li>
+            <img src="images/bq4.jpg">
+        </li>
+        <li>
+            <img src="images/bq5.jpg">
+        </li>
+    </ul>
+
+</div>
+<div id="nanqu" style="display:none;">
+    <ul class="gnzyb">
+        <li>
+            <img src="images/nq1.jpg">
+        </li>
+        <li>
+            <img src="images/nq2.jpg">
+        </li>
+        <li>
+            <img src="images/nq3.jpg">
+        </li>
+        <li>
+            <img src="images/nq4.jpg">
+        </li>
+        <li>
+            <img src="images/nq5.jpg">
+        </li>
+    </ul>
+</div>
+<div id="shaoer" style="display:none;">
+    <ul class="gnzyb">
+        <li>
+            <img src="images/se1.jpg">
+        </li>
+        <li>
+            <img src="images/se2.jpg">
+        </li>
+    </ul>
+</div>
+<div id="guji" style="display:none;">
+    <ul class="gnzyb">
+        <li>
+            <img src="images/gj1.jpg">
+        </li>
+        <li>
+            <img src="images/gj2.jpg">
+        </li>
+        <li>
+            <img src="images/gj3.jpg">
+        </li>
+    </ul>
+</div>
+
+<footer> 
+  <div class="p-footer">
+  	<p class="p-foot-t">国家图书馆版权所有<br>未经授权禁止复制或建立镜像</p>
+  </div>
+</footer>
+<script type="text/javascript">
+
+  function addClass1(){
+      $('#button1').addClass("xuazhong");
+      $('#button2').removeClass("xuazhong");
+      $('#button3').removeClass("xuazhong");
+      $('#button4').removeClass("xuazhong");
+      $('#beiqu').show();
+	  $('#nanqu').hide();
+	  $('#shaoer').hide();
+	  $('#guji').hide();
+	  
+    
+	};
+ function addClass2(){
+       $('#button1').removeClass("xuazhong");
+       $('#button2').addClass("xuazhong");
+       $('#button3').removeClass("xuazhong");
+      $('#button4').removeClass("xuazhong");
+      $('#beiqu').hide();
+	  $('#nanqu').show();
+	  $('#shaoer').hide();
+	  $('#guji').hide();
+	};
+  function addClass3(){
+      $('#button1').removeClass("xuazhong");
+      $('#button2').removeClass("xuazhong");
+      $('#button3').addClass("xuazhong");
+      $('#button4').removeClass("xuazhong");
+      $('#beiqu').hide();
+	  $('#nanqu').hide();
+	  $('#shaoer').show();
+	  $('#guji').hide();
+	  
+    
+	};
+  function addClass4(){
+     $('#button1').removeClass("xuazhong");
+      $('#button2').removeClass("xuazhong");
+      $('#button3').removeClass("xuazhong");
+      $('#button4').addClass("xuazhong");
+      $('#beiqu').hide();
+	  $('#nanqu').hide();
+	  $('#shaoer').hide();
+	  $('#guji').show();
+	};
+
+</script>
+
+</body>
+</html>

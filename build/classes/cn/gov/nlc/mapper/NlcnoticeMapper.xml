@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.NlcnoticeMapper" >
+  <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlcnotice" >
+    <id column="noticeid" property="noticeid" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="sub_person" property="subPerson" jdbcType="VARCHAR" />
+    <result column="sub_time" property="subTime" jdbcType="TIMESTAMP" />
+    <result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="bkpbtime" property="bkpbtime" jdbcType="TIMESTAMP" />
+    <result column="src" property="src" jdbcType="VARCHAR" />
+    <result column="board" property="board" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="annxurl" property="annxurl" jdbcType="VARCHAR" />
+    <result column="titlesrc" property="titlesrc" jdbcType="VARCHAR" />
+    <result column="praisecount" property="praisecount" jdbcType="INTEGER" />
+    <result column="collectcount" property="collectcount" jdbcType="INTEGER" />
+    <result column="pushmethod" property="pushmethod" jdbcType="VARCHAR" />
+    <result column="tops" property="tops" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.gov.nlc.pojo.Nlcnotice" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    noticeid, title, sub_person, sub_time, pub_time, upd_time, bkpbtime, src, board, 
+    status, source, annxurl, titlesrc, praisecount, collectcount, pushmethod, tops
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.gov.nlc.pojo.NlcnoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from nlcnotice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.gov.nlc.pojo.NlcnoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from nlcnotice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from nlcnotice
+    where noticeid = #{noticeid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from nlcnotice
+    where noticeid = #{noticeid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.gov.nlc.pojo.NlcnoticeExample" >
+    delete from nlcnotice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.gov.nlc.pojo.Nlcnotice" >
+    insert into nlcnotice (noticeid, title, sub_person, 
+      sub_time, pub_time, upd_time, 
+      bkpbtime, src, board, 
+      status, source, annxurl, 
+      titlesrc, praisecount, collectcount, 
+      pushmethod, tops, content
+      )
+    values (#{noticeid,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{subPerson,jdbcType=VARCHAR}, 
+      #{subTime,jdbcType=TIMESTAMP}, #{pubTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}, 
+      #{bkpbtime,jdbcType=TIMESTAMP}, #{src,jdbcType=VARCHAR}, #{board,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{annxurl,jdbcType=VARCHAR}, 
+      #{titlesrc,jdbcType=VARCHAR}, #{praisecount,jdbcType=INTEGER}, #{collectcount,jdbcType=INTEGER}, 
+      #{pushmethod,jdbcType=VARCHAR}, #{tops,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.gov.nlc.pojo.Nlcnotice" >
+    insert into nlcnotice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        noticeid,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="subPerson != null" >
+        sub_person,
+      </if>
+      <if test="subTime != null" >
+        sub_time,
+      </if>
+      <if test="pubTime != null" >
+        pub_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+      <if test="bkpbtime != null" >
+        bkpbtime,
+      </if>
+      <if test="src != null" >
+        src,
+      </if>
+      <if test="board != null" >
+        board,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="annxurl != null" >
+        annxurl,
+      </if>
+      <if test="titlesrc != null" >
+        titlesrc,
+      </if>
+      <if test="praisecount != null" >
+        praisecount,
+      </if>
+      <if test="collectcount != null" >
+        collectcount,
+      </if>
+      <if test="pushmethod != null" >
+        pushmethod,
+      </if>
+      <if test="tops != null" >
+        tops,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        #{noticeid,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subPerson != null" >
+        #{subPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="subTime != null" >
+        #{subTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubTime != null" >
+        #{pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bkpbtime != null" >
+        #{bkpbtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="src != null" >
+        #{src,jdbcType=VARCHAR},
+      </if>
+      <if test="board != null" >
+        #{board,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="annxurl != null" >
+        #{annxurl,jdbcType=VARCHAR},
+      </if>
+      <if test="titlesrc != null" >
+        #{titlesrc,jdbcType=VARCHAR},
+      </if>
+      <if test="praisecount != null" >
+        #{praisecount,jdbcType=INTEGER},
+      </if>
+      <if test="collectcount != null" >
+        #{collectcount,jdbcType=INTEGER},
+      </if>
+      <if test="pushmethod != null" >
+        #{pushmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="tops != null" >
+        #{tops,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.gov.nlc.pojo.NlcnoticeExample" resultType="java.lang.Integer" >
+    select count(*) from nlcnotice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update nlcnotice
+    <set >
+      <if test="record.noticeid != null" >
+        noticeid = #{record.noticeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subPerson != null" >
+        sub_person = #{record.subPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subTime != null" >
+        sub_time = #{record.subTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pubTime != null" >
+        pub_time = #{record.pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bkpbtime != null" >
+        bkpbtime = #{record.bkpbtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.src != null" >
+        src = #{record.src,jdbcType=VARCHAR},
+      </if>
+      <if test="record.board != null" >
+        board = #{record.board,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.annxurl != null" >
+        annxurl = #{record.annxurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.titlesrc != null" >
+        titlesrc = #{record.titlesrc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.praisecount != null" >
+        praisecount = #{record.praisecount,jdbcType=INTEGER},
+      </if>
+      <if test="record.collectcount != null" >
+        collectcount = #{record.collectcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.pushmethod != null" >
+        pushmethod = #{record.pushmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tops != null" >
+        tops = #{record.tops,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update nlcnotice
+    set noticeid = #{record.noticeid,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      sub_person = #{record.subPerson,jdbcType=VARCHAR},
+      sub_time = #{record.subTime,jdbcType=TIMESTAMP},
+      pub_time = #{record.pubTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      bkpbtime = #{record.bkpbtime,jdbcType=TIMESTAMP},
+      src = #{record.src,jdbcType=VARCHAR},
+      board = #{record.board,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      annxurl = #{record.annxurl,jdbcType=VARCHAR},
+      titlesrc = #{record.titlesrc,jdbcType=VARCHAR},
+      praisecount = #{record.praisecount,jdbcType=INTEGER},
+      collectcount = #{record.collectcount,jdbcType=INTEGER},
+      pushmethod = #{record.pushmethod,jdbcType=VARCHAR},
+      tops = #{record.tops,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update nlcnotice
+    set noticeid = #{record.noticeid,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      sub_person = #{record.subPerson,jdbcType=VARCHAR},
+      sub_time = #{record.subTime,jdbcType=TIMESTAMP},
+      pub_time = #{record.pubTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      bkpbtime = #{record.bkpbtime,jdbcType=TIMESTAMP},
+      src = #{record.src,jdbcType=VARCHAR},
+      board = #{record.board,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      annxurl = #{record.annxurl,jdbcType=VARCHAR},
+      titlesrc = #{record.titlesrc,jdbcType=VARCHAR},
+      praisecount = #{record.praisecount,jdbcType=INTEGER},
+      collectcount = #{record.collectcount,jdbcType=INTEGER},
+      pushmethod = #{record.pushmethod,jdbcType=VARCHAR},
+      tops = #{record.tops,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.gov.nlc.pojo.Nlcnotice" >
+    update nlcnotice
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subPerson != null" >
+        sub_person = #{subPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="subTime != null" >
+        sub_time = #{subTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubTime != null" >
+        pub_time = #{pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bkpbtime != null" >
+        bkpbtime = #{bkpbtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="src != null" >
+        src = #{src,jdbcType=VARCHAR},
+      </if>
+      <if test="board != null" >
+        board = #{board,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="annxurl != null" >
+        annxurl = #{annxurl,jdbcType=VARCHAR},
+      </if>
+      <if test="titlesrc != null" >
+        titlesrc = #{titlesrc,jdbcType=VARCHAR},
+      </if>
+      <if test="praisecount != null" >
+        praisecount = #{praisecount,jdbcType=INTEGER},
+      </if>
+      <if test="collectcount != null" >
+        collectcount = #{collectcount,jdbcType=INTEGER},
+      </if>
+      <if test="pushmethod != null" >
+        pushmethod = #{pushmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="tops != null" >
+        tops = #{tops,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where noticeid = #{noticeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.gov.nlc.pojo.Nlcnotice" >
+    update nlcnotice
+    set title = #{title,jdbcType=VARCHAR},
+      sub_person = #{subPerson,jdbcType=VARCHAR},
+      sub_time = #{subTime,jdbcType=TIMESTAMP},
+      pub_time = #{pubTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP},
+      bkpbtime = #{bkpbtime,jdbcType=TIMESTAMP},
+      src = #{src,jdbcType=VARCHAR},
+      board = #{board,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      annxurl = #{annxurl,jdbcType=VARCHAR},
+      titlesrc = #{titlesrc,jdbcType=VARCHAR},
+      praisecount = #{praisecount,jdbcType=INTEGER},
+      collectcount = #{collectcount,jdbcType=INTEGER},
+      pushmethod = #{pushmethod,jdbcType=VARCHAR},
+      tops = #{tops,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where noticeid = #{noticeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.gov.nlc.pojo.Nlcnotice" >
+    update nlcnotice
+    set title = #{title,jdbcType=VARCHAR},
+      sub_person = #{subPerson,jdbcType=VARCHAR},
+      sub_time = #{subTime,jdbcType=TIMESTAMP},
+      pub_time = #{pubTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP},
+      bkpbtime = #{bkpbtime,jdbcType=TIMESTAMP},
+      src = #{src,jdbcType=VARCHAR},
+      board = #{board,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      annxurl = #{annxurl,jdbcType=VARCHAR},
+      titlesrc = #{titlesrc,jdbcType=VARCHAR},
+      praisecount = #{praisecount,jdbcType=INTEGER},
+      collectcount = #{collectcount,jdbcType=INTEGER},
+      pushmethod = #{pushmethod,jdbcType=VARCHAR},
+      tops = #{tops,jdbcType=INTEGER}
+    where noticeid = #{noticeid,jdbcType=VARCHAR}
+  </update>
+</mapper>

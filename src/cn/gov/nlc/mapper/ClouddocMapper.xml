@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ClouddocMapper" >
+  <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Clouddoc" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="recid" property="recid" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="readstatus" property="readstatus" jdbcType="VARCHAR" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="sync" property="sync" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.gov.nlc.pojo.Clouddoc" extends="BaseResultMap" >
+    <result column="docinfo" property="docinfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, recid, time, username, deleted, readstatus, appid, sync
+  </sql>
+  <sql id="Blob_Column_List" >
+    docinfo
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.gov.nlc.pojo.ClouddocExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from clouddoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.gov.nlc.pojo.ClouddocExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from clouddoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from clouddoc
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from clouddoc
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.gov.nlc.pojo.ClouddocExample" >
+    delete from clouddoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.gov.nlc.pojo.Clouddoc" >
+    insert into clouddoc (id, recid, time, 
+      username, deleted, readstatus, 
+      appid, sync, docinfo
+      )
+    values (#{id,jdbcType=INTEGER}, #{recid,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
+      #{username,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER}, #{readstatus,jdbcType=VARCHAR}, 
+      #{appid,jdbcType=VARCHAR}, #{sync,jdbcType=INTEGER}, #{docinfo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.gov.nlc.pojo.Clouddoc" >
+    insert into clouddoc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="recid != null" >
+        recid,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="readstatus != null" >
+        readstatus,
+      </if>
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="sync != null" >
+        sync,
+      </if>
+      <if test="docinfo != null" >
+        docinfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="recid != null" >
+        #{recid,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="readstatus != null" >
+        #{readstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="sync != null" >
+        #{sync,jdbcType=INTEGER},
+      </if>
+      <if test="docinfo != null" >
+        #{docinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.gov.nlc.pojo.ClouddocExample" resultType="java.lang.Integer" >
+    select count(*) from clouddoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update clouddoc
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.recid != null" >
+        recid = #{record.recid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null" >
+        deleted = #{record.deleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.readstatus != null" >
+        readstatus = #{record.readstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sync != null" >
+        sync = #{record.sync,jdbcType=INTEGER},
+      </if>
+      <if test="record.docinfo != null" >
+        docinfo = #{record.docinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update clouddoc
+    set id = #{record.id,jdbcType=INTEGER},
+      recid = #{record.recid,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      username = #{record.username,jdbcType=VARCHAR},
+      deleted = #{record.deleted,jdbcType=INTEGER},
+      readstatus = #{record.readstatus,jdbcType=VARCHAR},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      sync = #{record.sync,jdbcType=INTEGER},
+      docinfo = #{record.docinfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update clouddoc
+    set id = #{record.id,jdbcType=INTEGER},
+      recid = #{record.recid,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      username = #{record.username,jdbcType=VARCHAR},
+      deleted = #{record.deleted,jdbcType=INTEGER},
+      readstatus = #{record.readstatus,jdbcType=VARCHAR},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      sync = #{record.sync,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.gov.nlc.pojo.Clouddoc" >
+    update clouddoc
+    <set >
+      <if test="recid != null" >
+        recid = #{recid,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="readstatus != null" >
+        readstatus = #{readstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="sync != null" >
+        sync = #{sync,jdbcType=INTEGER},
+      </if>
+      <if test="docinfo != null" >
+        docinfo = #{docinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.gov.nlc.pojo.Clouddoc" >
+    update clouddoc
+    set recid = #{recid,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      username = #{username,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=INTEGER},
+      readstatus = #{readstatus,jdbcType=VARCHAR},
+      appid = #{appid,jdbcType=VARCHAR},
+      sync = #{sync,jdbcType=INTEGER},
+      docinfo = #{docinfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.gov.nlc.pojo.Clouddoc" >
+    update clouddoc
+    set recid = #{recid,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      username = #{username,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=INTEGER},
+      readstatus = #{readstatus,jdbcType=VARCHAR},
+      appid = #{appid,jdbcType=VARCHAR},
+      sync = #{sync,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

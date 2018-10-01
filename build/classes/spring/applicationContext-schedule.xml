@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	<!-- 
+		"0 0 12 * * ?" 	   	每天中午十二点触发
+		"0 15 10 ? * *" 	   	每天早上10：15触发
+		"0 15 10 * * ?" 	   	每天早上10：15触发
+		"0 15 10 * * ? *" 	   	每天早上10：15触发
+		"0 15 10 * * ? 2005" 	   	2005年的每天早上10：15触发
+		"0 * 14 * * ?" 	   	每天从下午2点开始到2点59分每分钟一次触发
+		"0 0/5 14 * * ?" 	   	每天从下午2点开始到2：55分结束每5分钟一次触发
+		"0 0/5 14,18 * * ?" 	   	每天的下午2点至2：55和6点至6点55分两个时间段内每5分钟一次触发
+		"0 0-5 14 * * ?" 	   	每天14:00至14:05每分钟一次触发
+		"0 10,44 14 ? 3 WED" 	   	三月的每周三的14：10和14：44触发
+		"0 15 10 ? * MON-FRI" 	   	每个周一、周二、周三、周四、周五的10：15触发
+		"0 15 10 15 * ?" 	   	每月15号的10：15触发
+		"0 15 10 L * ?" 	   	每月的最后一天的10：15触发
+		"0 15 10 ? * 6L" 	   	每月最后一个周五的10：15触发
+		"0 15 10 ? * 6L" 	   	每月最后一个周五的10：15触发
+		"0 15 10 ? * 6L 2002-2005" 	   	2002年至2005年的每月最后一个周五的10：15触发
+		"0 15 10 ? * 6#3" 	   	每月的第三个周五的10：15触发
+		"0 0/1 * * * ?" 每分钟触发
+	 -->
+	
+	<!-- 测试1，每隔10秒显示11122233 -->
+	<bean id="testTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="testServiceImpl">
+				</property>
+				<property name="targetMethod" value="show" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value> 
+		</property>
+	</bean>
+	
+	<!-- 测试2，每隔5秒显示232233 -->
+	<bean id="testTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="testServiceImpl">
+				</property>
+				<property name="targetMethod" value="show2" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+			<value>0/5 * * * * ?</value> 
+		</property>
+	</bean>
+	
+	<!-- 任务1，统计昨天新增的用户数(统计nlcuser)  -->
+	<bean id="task1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="newUserAccount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务2，统计昨天的app启动次数  -->
+	<bean id="task2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appstart" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value> 
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务3，统计昨天的虚拟用户新增数量  -->
+	<bean id="task3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="virtualUserNum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 6 0 ? * *</value> 
+			  <!-- 每天零点6分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务4，统计昨天省、市的新增用户数   schelocation  -->
+	<bean id="task4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="locationNum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 2 0 ? * *</value>
+			  <!-- 每天零点2分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务5，统计昨天的实名用户新增数量 scherealnameusernum  -->
+	<bean id="task5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="realnameUserNum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 2 0 ? * *</value>
+			  <!-- 每天零点2分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务6，统计昨天的持卡用户新增数量 schecardusernum  -->
+	<bean id="task6" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="cardUserNum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 2 0 ? * *</value> 
+			  <!-- 每天零点2分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务7，统计昨天的预约数 scheholdrecord  -->
+	<bean id="task7" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="holdrecordnum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务8，统计昨天的续借数 scherenewrecord  -->
+	<bean id="task8" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="renewrecordnum" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务9，统计昨天的app启动次数去重的，插入scheappstartqc表  -->
+	<bean id="task9" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appstartqc" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务10，app统计页面，下载量的每日插入scheappxz，源自appstatist  -->
+	<bean id="task10" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appxz" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务11，app统计页面，更新量的每日插入scheappgx，源自apprenew  -->
+	<bean id="task11" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appgx" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 3 0 ? * *</value> 
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	
+	<bean id="task12" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getTodayWenJin" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 49 9 * * ?</value>
+		</property>
+	</bean>
+	
+	<bean id="task13" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getNlcMobileNews" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 41 18 * * ?</value>
+		</property>
+	</bean>
+	
+	<bean id="task14" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getNlcMobileNotice" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 15 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task15" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getNlcSubject" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 16 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task16" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getMobileJzyg" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 50 17 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task17" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="trailerAlert" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 7 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task18" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="oweWarn" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 10 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task19" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="remindReturn" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 11 * * ?</value>
+			  <!-- 每天零点3分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务20，插入昨天的opac推荐热词前100  -->
+	<bean id="task20" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="hotword" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 2 0 ? * *</value> 
+			  <!-- 每天零点2分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务21，插入昨天的页面访问量新闻的访问量详情 -->
+	<bean id="task21" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwNewsdetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务22，插入昨天的页面访问量新闻的访问量总量 -->
+	<bean id="task22" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwNewsAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务23，插入昨天的页面访问量 -->
+	<bean id="task23" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfm" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务24，插入昨天的opac检索的页面访问量 -->
+	<bean id="task24" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwOpacAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务25，插入昨天的olcc推荐热词前100  -->
+	<bean id="task25" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="olccHotword" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 2 0 ? * *</value> 
+			  <!-- 每天零点2分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务26，插入昨天的olcc检索的页面访问量 -->
+	<bean id="task26" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwOlccAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务27，插入昨天的站内搜索的页面访问量 -->
+	<bean id="task27" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwZnssAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务28，插入昨天的站内搜索的页面访问量 -->
+	<bean id="task28" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwSysAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务29，插入昨天的广告位的页面访问量 -->
+	<bean id="task29" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwAdsAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务30，插入昨天的广告位的页面访问量 -->
+	<bean id="task30" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwGgwdetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务31，插入昨天的页面访问量公告的访问量总量 -->
+	<bean id="task31" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwNotieAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务32，插入昨天的页面访问量公告的详细访问量 -->
+	<bean id="task32" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwNoticedetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务33，插入昨天的页面访问量讲座预告的总访问量 -->
+	<bean id="task33" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwTrailerAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务34，插入昨天的页面访问量讲座预告的详细访问量 -->
+	<bean id="task34" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwTrailerdetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务35，插入昨天的页面访问量专题的总访问量 -->
+	<bean id="task35" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwSubjectAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务36，插入昨天的页面访问量专题的详情访问量 -->
+	<bean id="task36" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwSubjectdetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务37，插入昨天的页面访问量书架的访问量 -->
+	<bean id="task37" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwSjAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 1 0 ? * *</value>
+			  <!-- 每天零点1分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务38，插入昨天的页面访问量文津的总访问量 -->
+	<bean id="task38" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwWjAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务39，插入昨天的页面访问量文津的详情访问量 -->
+	<bean id="task39" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwWjdetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务40，插入昨天的页面访问量个人的总访问量 -->
+	<bean id="task40" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwPersonAmount" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务41，插入昨天的页面访问量个人的详情访问量 -->
+	<bean id="task41" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="ymfwPersonDetail" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务42，插入昨天的页面访问量个人的详情访问量 -->
+	<bean id="task42" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="userPaint" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务43，插入昨天的app统计 -->
+	<bean id="task43" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appsta" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务44，插入昨天的版本安装量 -->
+	<bean id="task44" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="appedition" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 5 0 ? * *</value>
+			  <!-- 每天零点5分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务45，插入昨天的装机详情 -->
+	<bean id="task45" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="model" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 4 0 ? * *</value>
+			  <!-- 每天零点4分触发 -->
+		</property>
+	</bean>
+	
+	<!-- 任务48-->
+	<bean id="task48" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="overReturn" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 11 * * ?</value>
+			  <!-- 每天11点触发 -->
+		</property>
+	</bean>
+	
+	<bean id="task49" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getNlcMobileNews" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 17 * * ?</value>
+		</property>
+	</bean>
+	
+	<bean id="task50" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getNlcMobileNotice" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 17 * * ?</value>
+		</property>
+	</bean>
+	
+	<bean id="task51" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="getMobileJzyg" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 17 * * ?</value>
+		</property>
+	</bean>
+	
+	<bean id="task52" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="scheduleServiceImpl"/>
+				<property name="targetMethod" value="clearUserinfoqrcode" />
+			</bean>
+		</property>
+		
+		<property name="cronExpression">
+		<value>0 0 17 * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 定时器工厂 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="task1" />
+				<ref bean="task2" />
+				<ref bean="task3" />
+				<ref bean="task4" />
+				<ref bean="task5" />
+				<ref bean="task6" />
+				<ref bean="task7" />
+				<ref bean="task8" />
+				<ref bean="task9" />
+				<ref bean="task10" />
+				<ref bean="task11" />
+				<ref bean="task12" />
+				<ref bean="task13" />
+				<ref bean="task14" />
+				<ref bean="task15" />
+				<ref bean="task16" />
+				<ref bean="task17" />
+				<ref bean="task18" />
+				<ref bean="task19" />
+				<ref bean="task20" />
+				<ref bean="task21" />
+				<ref bean="task22" />
+				<ref bean="task23" />
+				<ref bean="task24" />
+				<ref bean="task25" />
+				<ref bean="task26" />
+				<ref bean="task27" />
+				<ref bean="task28" />
+				<ref bean="task29" />
+				<ref bean="task30" />
+				<ref bean="task31" />
+				<ref bean="task32" />
+				<ref bean="task33" />
+				<ref bean="task34" />
+				<ref bean="task35" />
+				<ref bean="task36" />
+				<ref bean="task37" />
+				<ref bean="task38" />
+				<ref bean="task39" />
+				<ref bean="task40" />
+				<ref bean="task41" />
+				<ref bean="task42" />
+				<ref bean="task43" />
+				<ref bean="task44" />
+				<ref bean="task45" />
+				<ref bean="task48" />
+				<ref bean="task49" />
+				<ref bean="task50" />
+				<ref bean="task51" />
+				<ref bean="task52" />
+				 -->
+			</list>
+		</property>
+	</bean>
+	
+</beans>

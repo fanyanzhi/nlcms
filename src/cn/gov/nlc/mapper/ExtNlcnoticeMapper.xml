@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ExtNlcnoticeMapper" >
+   <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlcnotice" >
+    <id column="noticeid" property="noticeid" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="sub_person" property="subPerson" jdbcType="VARCHAR" />
+    <result column="sub_time" property="subTime" jdbcType="TIMESTAMP" />
+    <result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="src" property="src" jdbcType="VARCHAR" />
+    <result column="board" property="board" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="annxurl" property="annxurl" jdbcType="VARCHAR" />
+    <result column="titlesrc" property="titlesrc" jdbcType="VARCHAR" />
+    <result column="praisecount" property="praisecount" jdbcType="INTEGER" />
+    <result column="collectcount" property="collectcount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   noticeid, title, sub_person, sub_time, pub_time, upd_time, src, board, status, source, 
+    annxurl, titlesrc, praisecount, collectcount
+  </sql>
+   <sql id="index_Column_List" >
+   noticeid, title, pub_time, status
+  </sql>
+ 
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  
+  <resultMap id="ResultMapWithBLOBs" type="cn.gov.nlc.pojo.Nlcnotice" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <resultMap id="noticeandcollect" type="cn.gov.nlc.pojo.NlcnoticeExt" extends="BaseResultMap">
+		<result column="time" property="time" />
+	</resultMap>
+
+   <select id="getMyCollect" parameterType="java.lang.String" resultMap="noticeandcollect">
+   	select  nc.time, n.noticeid, title, sub_person, sub_time, pub_time, upd_time, src, board, status, praisecount, collectcount
+    from nlcnotice n inner join nlcnoticecollect nc on n.noticeid=nc.noticeid
+    where nc.loginaccount=#{loginAccount} order by nc.time desc
+   </select>
+   
+   <select id="getMyPraise" parameterType="java.lang.String" resultMap="noticeandcollect">
+   	select  nc.time, n.noticeid, title, sub_person, sub_time, pub_time, upd_time, src, board, status, praisecount, collectcount
+    from nlcnotice n inner join nlcnoticepraise nc on n.noticeid=nc.noticeid
+    where nc.loginaccount=#{loginAccount} order by nc.time desc
+   </select>
+   
+    <update id="updatePraiseCount" parameterType="java.lang.String">
+    update nlcnotice set praisecount=praisecount+1 where noticeid=#{noticeId}
+    </update>
+    
+    <select id="seaNoticeList" parameterType="hashmap" resultMap="BaseResultMap" >
+   select
+   <include refid="Base_Column_List"/>
+    from nlcnotice
+   where status = '已发布' and title like CONCAT('%',#{keyword},'%') or content like CONCAT('%',#{keyword},'%') order by pub_time desc limit #{start},#{length}  
+   </select>
+   
+   <select id="getShareNoticeList" resultMap="ResultMapWithBLOBs" >
+  	select 
+    <include refid="Base_Column_List" />
+     ,
+    <include refid="Blob_Column_List" />
+    from nlcnotice 
+    where pub_time &lt; (select pub_time from nlcnotice where noticeid = #{noticeid}) and status = '已发布' order by pub_time desc limit #{rows}
+  </select>
+  
+  <select id="getIndexNotice" resultType="java.util.HashMap" >
+  	select 
+    <include refid="index_Column_List" />
+    from nlcnotice 
+    where status='已发布' and tops=1 order by pub_time desc limit 0,1
+  </select>
+  
+  <select id="getIndex2Notice" resultType="java.util.HashMap" >
+  	select 
+    <include refid="index_Column_List" />
+    from nlcnotice 
+    where status='已发布' order by pub_time desc limit 0,1
+  </select>
+  
+  <update id="updateCollectCount" parameterType="java.lang.String">
+    	update nlcnotice set collectcount=collectcount+1 where noticeid=#{noticeid}
+  </update>
+  
+   <update id="updateCollectCountDecrease" parameterType="list">
+    	update nlcnotice set collectcount=collectcount-1 where noticeid in 
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+        	#{item}  
+    	</foreach>
+    </update>
+  
+  </mapper>

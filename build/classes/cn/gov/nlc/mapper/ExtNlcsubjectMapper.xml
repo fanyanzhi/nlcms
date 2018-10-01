@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ExtNlcsubjectMapper">
+	<resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlcsubject">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="subjectid" property="subjectid" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="adurl" property="adurl" jdbcType="VARCHAR" />
+		<result column="creater" property="creater" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, subjectid, title, adurl, creater, createtime, introduce, praisecount
+	</sql>
+
+	<resultMap id="subjectandcollect" type="cn.gov.nlc.pojo.NlcsubjectExt"
+		extends="BaseResultMap">
+		<result column="time" property="time" />
+	</resultMap>
+
+	<select id="getMyCollect" parameterType="java.lang.String"
+		resultMap="subjectandcollect">
+		select nc.time, n.subjectid, title, adurl, creater, pubtime, createtime,
+		introduce, praisecount, collectcount
+		from nlcsubject n inner join nlcsubjectcollect nc on
+		n.subjectid=nc.subjectid
+		where nc.loginaccount=#{loginAccount} order by nc.time desc
+	</select>
+	
+	<select id="getMyPraise" parameterType="java.lang.String"
+		resultMap="subjectandcollect">
+		select nc.time, n.subjectid, title, adurl, creater, pubtime, createtime,
+		introduce, praisecount, collectcount
+		from nlcsubject n inner join nlcsubjectpraise nc on
+		n.subjectid=nc.subjectid
+		where nc.loginaccount=#{loginAccount} order by nc.time desc
+	</select>
+
+	<update id="updatePraiseCount" parameterType="java.lang.String">
+		update nlcsubject set praisecount=praisecount+1 where subjectid=#{subjectId}
+	</update>
+
+	<select id="seaSubjectList" parameterType="hashmap" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from nlcsubject
+		where status='已发布' and title like CONCAT('%',#{keyword},'%') or introduce like
+		CONCAT('%',#{keyword},'%') order by pubtime desc limit #{start},#{length}
+	</select>
+	
+	
+	<select id="getIndexSubject" parameterType="int" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from nlcsubject
+		where status='已发布' order by sort limit #{num};
+	</select>
+	
+	<update id="updateCollectCount" parameterType="java.lang.String">
+    	update nlcsubject set collectcount=collectcount+1 where subjectid=#{subjectid}
+    </update>
+    
+    <update id="updateCollectCountDecrease" parameterType="list">
+    	update nlcsubject set collectcount=collectcount-1 where subjectid in 
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+        	#{item}  
+    	</foreach>
+    </update>
+	
+</mapper>

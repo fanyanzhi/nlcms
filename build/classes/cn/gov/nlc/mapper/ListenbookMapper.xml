@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ListenbookMapper" >
+  <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Listenbook" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bookid" property="bookid" jdbcType="VARCHAR" />
+    <result column="bookname" property="bookname" jdbcType="VARCHAR" />
+    <result column="bookpic" property="bookpic" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bookid, bookname, bookpic, url, path
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.gov.nlc.pojo.ListenbookExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from listenbook
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from listenbook
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from listenbook
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.gov.nlc.pojo.ListenbookExample" >
+    delete from listenbook
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.gov.nlc.pojo.Listenbook" >
+    insert into listenbook (id, bookid, bookname, 
+      bookpic, url, path)
+    values (#{id,jdbcType=INTEGER}, #{bookid,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, 
+      #{bookpic,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.gov.nlc.pojo.Listenbook" >
+    insert into listenbook
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="bookname != null" >
+        bookname,
+      </if>
+      <if test="bookpic != null" >
+        bookpic,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null" >
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpic != null" >
+        #{bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.gov.nlc.pojo.ListenbookExample" resultType="java.lang.Integer" >
+    select count(*) from listenbook
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update listenbook
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookid != null" >
+        bookid = #{record.bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookname != null" >
+        bookname = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookpic != null" >
+        bookpic = #{record.bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update listenbook
+    set id = #{record.id,jdbcType=INTEGER},
+      bookid = #{record.bookid,jdbcType=VARCHAR},
+      bookname = #{record.bookname,jdbcType=VARCHAR},
+      bookpic = #{record.bookpic,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.gov.nlc.pojo.Listenbook" >
+    update listenbook
+    <set >
+      <if test="bookid != null" >
+        bookid = #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null" >
+        bookname = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpic != null" >
+        bookpic = #{bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.gov.nlc.pojo.Listenbook" >
+    update listenbook
+    set bookid = #{bookid,jdbcType=VARCHAR},
+      bookname = #{bookname,jdbcType=VARCHAR},
+      bookpic = #{bookpic,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

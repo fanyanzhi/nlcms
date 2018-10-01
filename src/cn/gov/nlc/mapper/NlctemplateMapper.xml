@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.NlctemplateMapper" >
+  <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlctemplate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="datepic" property="datepic" jdbcType="VARCHAR" />
+    <result column="poempic" property="poempic" jdbcType="VARCHAR" />
+    <result column="backpic" property="backpic" jdbcType="VARCHAR" />
+    <result column="mottopic" property="mottopic" jdbcType="VARCHAR" />
+    <result column="separatorpic" property="separatorpic" jdbcType="VARCHAR" />
+    <result column="poemsreturnpic" property="poemsreturnpic" jdbcType="VARCHAR" />
+    <result column="translatepic" property="translatepic" jdbcType="VARCHAR" />
+    <result column="isdefault" property="isdefault" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, starttime, endtime, datepic, poempic, backpic, mottopic, separatorpic, 
+    poemsreturnpic, translatepic, isdefault, status, time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.gov.nlc.pojo.NlctemplateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from nlctemplate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlctemplate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from nlctemplate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.gov.nlc.pojo.NlctemplateExample" >
+    delete from nlctemplate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.gov.nlc.pojo.Nlctemplate" >
+    insert into nlctemplate (id, name, starttime, 
+      endtime, datepic, poempic, 
+      backpic, mottopic, separatorpic, 
+      poemsreturnpic, translatepic, isdefault, 
+      status, time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{datepic,jdbcType=VARCHAR}, #{poempic,jdbcType=VARCHAR}, 
+      #{backpic,jdbcType=VARCHAR}, #{mottopic,jdbcType=VARCHAR}, #{separatorpic,jdbcType=VARCHAR}, 
+      #{poemsreturnpic,jdbcType=VARCHAR}, #{translatepic,jdbcType=VARCHAR}, #{isdefault,jdbcType=TINYINT}, 
+      #{status,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.gov.nlc.pojo.Nlctemplate" >
+    insert into nlctemplate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="datepic != null" >
+        datepic,
+      </if>
+      <if test="poempic != null" >
+        poempic,
+      </if>
+      <if test="backpic != null" >
+        backpic,
+      </if>
+      <if test="mottopic != null" >
+        mottopic,
+      </if>
+      <if test="separatorpic != null" >
+        separatorpic,
+      </if>
+      <if test="poemsreturnpic != null" >
+        poemsreturnpic,
+      </if>
+      <if test="translatepic != null" >
+        translatepic,
+      </if>
+      <if test="isdefault != null" >
+        isdefault,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="datepic != null" >
+        #{datepic,jdbcType=VARCHAR},
+      </if>
+      <if test="poempic != null" >
+        #{poempic,jdbcType=VARCHAR},
+      </if>
+      <if test="backpic != null" >
+        #{backpic,jdbcType=VARCHAR},
+      </if>
+      <if test="mottopic != null" >
+        #{mottopic,jdbcType=VARCHAR},
+      </if>
+      <if test="separatorpic != null" >
+        #{separatorpic,jdbcType=VARCHAR},
+      </if>
+      <if test="poemsreturnpic != null" >
+        #{poemsreturnpic,jdbcType=VARCHAR},
+      </if>
+      <if test="translatepic != null" >
+        #{translatepic,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefault != null" >
+        #{isdefault,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.gov.nlc.pojo.NlctemplateExample" resultType="java.lang.Integer" >
+    select count(*) from nlctemplate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update nlctemplate
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.starttime != null" >
+        starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endtime != null" >
+        endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.datepic != null" >
+        datepic = #{record.datepic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poempic != null" >
+        poempic = #{record.poempic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backpic != null" >
+        backpic = #{record.backpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mottopic != null" >
+        mottopic = #{record.mottopic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.separatorpic != null" >
+        separatorpic = #{record.separatorpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poemsreturnpic != null" >
+        poemsreturnpic = #{record.poemsreturnpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.translatepic != null" >
+        translatepic = #{record.translatepic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdefault != null" >
+        isdefault = #{record.isdefault,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update nlctemplate
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      datepic = #{record.datepic,jdbcType=VARCHAR},
+      poempic = #{record.poempic,jdbcType=VARCHAR},
+      backpic = #{record.backpic,jdbcType=VARCHAR},
+      mottopic = #{record.mottopic,jdbcType=VARCHAR},
+      separatorpic = #{record.separatorpic,jdbcType=VARCHAR},
+      poemsreturnpic = #{record.poemsreturnpic,jdbcType=VARCHAR},
+      translatepic = #{record.translatepic,jdbcType=VARCHAR},
+      isdefault = #{record.isdefault,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.gov.nlc.pojo.Nlctemplate" >
+    update nlctemplate
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="datepic != null" >
+        datepic = #{datepic,jdbcType=VARCHAR},
+      </if>
+      <if test="poempic != null" >
+        poempic = #{poempic,jdbcType=VARCHAR},
+      </if>
+      <if test="backpic != null" >
+        backpic = #{backpic,jdbcType=VARCHAR},
+      </if>
+      <if test="mottopic != null" >
+        mottopic = #{mottopic,jdbcType=VARCHAR},
+      </if>
+      <if test="separatorpic != null" >
+        separatorpic = #{separatorpic,jdbcType=VARCHAR},
+      </if>
+      <if test="poemsreturnpic != null" >
+        poemsreturnpic = #{poemsreturnpic,jdbcType=VARCHAR},
+      </if>
+      <if test="translatepic != null" >
+        translatepic = #{translatepic,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefault != null" >
+        isdefault = #{isdefault,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.gov.nlc.pojo.Nlctemplate" >
+    update nlctemplate
+    set name = #{name,jdbcType=VARCHAR},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      datepic = #{datepic,jdbcType=VARCHAR},
+      poempic = #{poempic,jdbcType=VARCHAR},
+      backpic = #{backpic,jdbcType=VARCHAR},
+      mottopic = #{mottopic,jdbcType=VARCHAR},
+      separatorpic = #{separatorpic,jdbcType=VARCHAR},
+      poemsreturnpic = #{poemsreturnpic,jdbcType=VARCHAR},
+      translatepic = #{translatepic,jdbcType=VARCHAR},
+      isdefault = #{isdefault,jdbcType=TINYINT},
+      status = #{status,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

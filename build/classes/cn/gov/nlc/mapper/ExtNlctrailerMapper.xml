@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ExtNlctrailerMapper" >
+   <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlctrailer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="trailerid" property="trailerid" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="columnid" property="columnid" jdbcType="VARCHAR" />
+    <result column="columnname" property="columnname" jdbcType="VARCHAR" />
+    <result column="speaker" property="speaker" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="TIMESTAMP" />
+    <result column="speakername" property="speakername" jdbcType="TIMESTAMP" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="guanqu" property="guanqu" jdbcType="VARCHAR" />
+    <result column="speaktime" property="speaktime" jdbcType="VARCHAR" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    id, trailerid, title, columnid, columnname, speaker, place, speakername, starttime, source, endtime, status, guanqu, speaktime
+  </sql>
+  
+  <sql id="index_Column_List" >
+    id, trailerid, title, speaker, speakername, starttime, endtime, status, guanqu
+  </sql>
+  
+  <resultMap id="trailerandcollect" type="cn.gov.nlc.pojo.NlctrailerExt" extends="BaseResultMap">
+		<result column="time" property="time" />
+	</resultMap>
+
+   <select id="getMyCollect" parameterType="java.lang.String" resultMap="trailerandcollect">
+   	select  nc.time,n.trailerid, n.title, columnid, columnname,speaker,place,speakername,starttime,source,endtime,status,guanqu,speaktime, praisecount, collectcount
+    from nlctrailer n inner join nlctrailercollect nc on n.trailerid=nc.trailerid
+    where nc.loginaccount=#{loginAccount} order by nc.time desc
+   </select>
+   
+   <select id="getMyPraise" parameterType="java.lang.String" resultMap="trailerandcollect">
+   	select  nc.time,n.trailerid, n.title, columnid, columnname,speaker,place,speakername,starttime,source,endtime,status,guanqu,speaktime, praisecount, collectcount
+    from nlctrailer n inner join nlctrailerpraise nc on n.trailerid=nc.trailerid
+    where nc.loginaccount=#{loginAccount} order by nc.time desc
+   </select>
+   
+    <update id="updatePraiseCount" parameterType="java.lang.String">
+    update nlctrailer set praisecount=praisecount+1 where trailerid=#{trailerId}
+    </update>
+    
+    <select id="seaTrailerList" parameterType="hashmap" resultMap="BaseResultMap" >
+   select
+   <include refid="Base_Column_List"/>
+    from nlctrailer 
+   where status='已发布' and title like CONCAT('%',#{keyword},'%') or speaker like CONCAT('%',#{keyword},'%') or place like CONCAT('%',#{keyword},'%') order by starttime desc limit #{start},#{length}  
+   </select>
+   
+   <select id="getIndexTrailer" resultType="java.util.HashMap" >
+  	select 
+    <include refid="index_Column_List" />
+    from nlctrailer 
+    where status='已发布' and starttime>curdate() order by starttime asc limit 0,1
+  </select>
+  
+   <update id="updateCollectCount" parameterType="java.lang.String">
+    	update nlctrailer set collectcount=collectcount+1 where trailerid=#{trailerid}
+    </update>
+    
+    <update id="updateCollectCountDecrease" parameterType="list">
+    	update nlctrailer set collectcount=collectcount-1 where trailerid in 
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+        	#{item}  
+    	</foreach>
+    </update>
+    
+  </mapper>

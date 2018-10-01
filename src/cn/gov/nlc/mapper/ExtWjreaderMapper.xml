@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.ExtWjreaderMapper">
+	<resultMap id="WenjinResultMap" type="cn.gov.nlc.pojo.Wjreader">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
+		<result column="wjyear" property="wjyear" jdbcType="VARCHAR" />
+		<result column="wjmonth" property="wjmonth" jdbcType="VARCHAR" />
+		<result column="wjdate" property="wjdate"/>
+		<result column="shiju" property="shiju" jdbcType="VARCHAR" />
+		<result column="sjsource" property="sjsource" jdbcType="VARCHAR" />
+		<result column="sjyiwen" property="sjyiwen" jdbcType="VARCHAR" />
+		<result column="sjurl" property="sjurl" jdbcType="VARCHAR" />
+		<result column="quanshi" property="quanshi" jdbcType="VARCHAR" />
+		<result column="geyan" property="geyan" jdbcType="VARCHAR" />
+		<result column="gysource" property="gysource" jdbcType="VARCHAR" />
+		<result column="gyyiwen" property="gyyiwen" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="seaWenJinList" parameterType="hashmap" resultMap="WenjinResultMap">
+		select
+		wjdate,shiju,sjsource,sjyiwen,sjurl,quanshi,geyan,gysource,gyyiwen
+		from wjreader
+		where shiju like CONCAT('%',#{keyword},'%') or sjsource like
+		CONCAT('%',#{keyword},'%') or sjyiwen like CONCAT('%',#{keyword},'%')
+		or quanshi like CONCAT('%',#{keyword},'%') or geyan like
+		CONCAT('%',#{keyword},'%') or gysource like CONCAT('%',#{keyword},'%')
+		or gyyiwen like CONCAT('%',#{keyword},'%') order by wjdate desc limit #{start},#{length}
+	</select>
+	</mapper>

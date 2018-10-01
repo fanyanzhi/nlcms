@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gov.nlc.mapper.NlcuserloginlogMapper" >
+  <resultMap id="BaseResultMap" type="cn.gov.nlc.pojo.Nlcuserloginlog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="userrole" property="userrole" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="client" property="client" jdbcType="VARCHAR" />
+    <result column="clientid" property="clientid" jdbcType="VARCHAR" />
+    <result column="clientos" property="clientos" jdbcType="VARCHAR" />
+    <result column="baseos" property="baseos" jdbcType="VARCHAR" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, userrole, address, client, clientid, clientos, baseos, appid, location, 
+    version, time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.gov.nlc.pojo.NlcuserloginlogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from nlcuserloginlog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlcuserloginlog
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from nlcuserloginlog
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.gov.nlc.pojo.NlcuserloginlogExample" >
+    delete from nlcuserloginlog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.gov.nlc.pojo.Nlcuserloginlog" >
+    insert into nlcuserloginlog (id, username, userrole, 
+      address, client, clientid, 
+      clientos, baseos, appid, 
+      location, version, time
+      )
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{userrole,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{client,jdbcType=VARCHAR}, #{clientid,jdbcType=VARCHAR}, 
+      #{clientos,jdbcType=VARCHAR}, #{baseos,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.gov.nlc.pojo.Nlcuserloginlog" >
+    insert into nlcuserloginlog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="userrole != null" >
+        userrole,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="client != null" >
+        client,
+      </if>
+      <if test="clientid != null" >
+        clientid,
+      </if>
+      <if test="clientos != null" >
+        clientos,
+      </if>
+      <if test="baseos != null" >
+        baseos,
+      </if>
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userrole != null" >
+        #{userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="client != null" >
+        #{client,jdbcType=VARCHAR},
+      </if>
+      <if test="clientid != null" >
+        #{clientid,jdbcType=VARCHAR},
+      </if>
+      <if test="clientos != null" >
+        #{clientos,jdbcType=VARCHAR},
+      </if>
+      <if test="baseos != null" >
+        #{baseos,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.gov.nlc.pojo.NlcuserloginlogExample" resultType="java.lang.Integer" >
+    select count(*) from nlcuserloginlog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update nlcuserloginlog
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userrole != null" >
+        userrole = #{record.userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.client != null" >
+        client = #{record.client,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clientid != null" >
+        clientid = #{record.clientid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clientos != null" >
+        clientos = #{record.clientos,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseos != null" >
+        baseos = #{record.baseos,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update nlcuserloginlog
+    set id = #{record.id,jdbcType=BIGINT},
+      username = #{record.username,jdbcType=VARCHAR},
+      userrole = #{record.userrole,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      client = #{record.client,jdbcType=VARCHAR},
+      clientid = #{record.clientid,jdbcType=VARCHAR},
+      clientos = #{record.clientos,jdbcType=VARCHAR},
+      baseos = #{record.baseos,jdbcType=VARCHAR},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.gov.nlc.pojo.Nlcuserloginlog" >
+    update nlcuserloginlog
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userrole != null" >
+        userrole = #{userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="client != null" >
+        client = #{client,jdbcType=VARCHAR},
+      </if>
+      <if test="clientid != null" >
+        clientid = #{clientid,jdbcType=VARCHAR},
+      </if>
+      <if test="clientos != null" >
+        clientos = #{clientos,jdbcType=VARCHAR},
+      </if>
+      <if test="baseos != null" >
+        baseos = #{baseos,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.gov.nlc.pojo.Nlcuserloginlog" >
+    update nlcuserloginlog
+    set username = #{username,jdbcType=VARCHAR},
+      userrole = #{userrole,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      client = #{client,jdbcType=VARCHAR},
+      clientid = #{clientid,jdbcType=VARCHAR},
+      clientos = #{clientos,jdbcType=VARCHAR},
+      baseos = #{baseos,jdbcType=VARCHAR},
+      appid = #{appid,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
